@@ -11,6 +11,6 @@ services:
 
   bot:
     build: bot/
-    command: python ./main.py ${TELEGRAM_BOT_TOKEN}
+    command: python3 ./main.py ${TELEGRAM_BOT_TOKEN}
     depends_on:
       - postgres
