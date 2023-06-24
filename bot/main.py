@@ -12,7 +12,7 @@ try:
 except:
     raise Exception("TELEGRAM_BOT_TOKEN is missing. Add token to .env at you root project or add to arguments 'python3 main.py \"token\"'")
 bot = telebot.TeleBot(token=botToken)
-
+print("Bot run successfully")
 
 @bot.message_handler(commands=['start'])
 def startFunction(message):
@@ -45,9 +45,10 @@ def giveTeaBagFunctionSecondStep(message,description):
     tries = -1
     try:
         tries = int(message.text)
-        bot.send_message(message.chat.id, "Отлично! Теперь отправь свою геолокацию. Это можно сделать вложением через мобильное приложение. \n\
-                         Или отправь долготу и широту через пробел (например как '48.741261 55.754196'). Скопировать из мобильных карт.")
-        bot.register_next_step_handler_by_chat_id(message.chat.id,location, description, tries)
+        if tries < 0:
+            raise Exception("Fuck, it's negative")
+        bot.send_message(message.chat.id, "Отлично! Теперь отправь свою геолокацию. Это можно сделать вложением через мобильное приложение. \n Или отправь долготу и широту через пробел (например как '48.741261 55.754196'). Скопировать из мобильных карт.")
+        bot.register_next_step_handler_by_chat_id(message.chat.id,locationGiveTeaBagFunction, description, tries)
     except ValueError:
         # Пользователь ввел не число
         bot.send_message(message.chat.id,"Ой, ты ввел не число! Попробуй еще раз!")
@@ -58,8 +59,21 @@ def giveTeaBagFunctionSecondStep(message,description):
         
 
 
-@bot.message_handler(content_types=["location"])
-def location(message):
-    print(message.location)
+def locationGiveTeaBagFunction(message, description, tries):
+    latitude, longitude = 0, 0
+    if message.location != None:
+        bot.send_message(message.chat.id,f"Отлично! Добавил твое предложение в чайный борд! А именно:\n {description} | {tries} заварок | {message.location.latitude} and {message.location.longitude}")
+    elif len(message.text.split) == 2:
+        try:
+            latitude = float(message.text.split()[0])
+            longitude = float(message.text.split()[1])
+            bot.send_message(message.chat.id,f"Отлично! Добавил твое предложение в чайный борд! А именно:\n {description} | {tries} заварок | {latitude} and {longitude}")
+        except:
+            bot.send_message(message.chat.id, "Ой, попробуй еще раз!")
+            bot.register_next_step_handler_by_chat_id(message.chat.id,locationGiveTeaBagFunction,description, tries)
+            return 
+    # TODO: сделать запись в бд на этом этапе
+
+
 
 bot.polling()
