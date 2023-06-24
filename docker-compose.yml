@@ -3,12 +3,14 @@ services:
   postgres:
     image: postgres:13.3
     environment:
-      POSTGRES_DB: "habrdb"
-      POSTGRES_USER: "habrpguser"
-      POSTGRES_PASSWORD: "pgpwd4habr"
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
       - "5432:5432"
 
   bot:
     build: bot/
-    command: python ./main.py
+    command: python ./main.py ${TELEGRAM_BOT_TOKEN}
+    depends_on:
+      - postgres
