@@ -1,0 +1,6 @@
+FROM python:latest
+
+ADD main.py /bot/
+ADD secret.py /bot/
+
+WORKDIR /bot/
