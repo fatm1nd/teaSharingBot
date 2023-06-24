@@ -1,5 +1,4 @@
 import telebot
-import secret
 import os
 import sys
 
