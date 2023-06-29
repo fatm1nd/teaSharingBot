@@ -16,7 +16,7 @@ jobs:
     - name: Build the Docker image
       run: docker compose build
   run:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
