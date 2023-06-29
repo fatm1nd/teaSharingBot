@@ -31,5 +31,3 @@ jobs:
             docker-compose --file docker-compose.yml down;
             docker-compose build
             docker-compose --file docker-compose.yml up -d;
-            docker system prune --all --force;
-    
