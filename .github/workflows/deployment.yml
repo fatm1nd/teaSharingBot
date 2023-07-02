@@ -26,9 +26,9 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWD }}
           script: 
-            cd ${{ secrets.PROJECT_FOLDER }};
-            git checkout main;
-            git pull;
-            docker-compose --file docker-compose.yml down;
+            cd ${{ secrets.PROJECT_FOLDER }}
+            git checkout main
+            git pull
+            docker-compose --file docker-compose.yml down
             docker-compose build
-            docker-compose --file docker-compose.yml up -d;
+            docker-compose --file docker-compose.yml up -d
