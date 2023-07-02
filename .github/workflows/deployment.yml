@@ -25,4 +25,10 @@ jobs:
           username: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWD }}
-          script: whoami
+          script: 
+            cd ${{ secrets.PROJECT_FOLDER }};
+            git checkout main;
+            git pull;
+            docker-compose --file docker-compose.yml down;
+            docker-compose build
+            docker-compose --file docker-compose.yml up -d;
