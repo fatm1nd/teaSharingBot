@@ -25,8 +25,9 @@ jobs:
           username: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWD }}
-          script: 
+          script: |
             cd ${{ secrets.PROJECT_FOLDER }}
+            ls -al
             git checkout main
             git pull
             docker-compose --file docker-compose.yml down
